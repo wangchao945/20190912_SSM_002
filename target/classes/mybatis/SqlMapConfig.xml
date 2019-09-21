@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 配置别名 -->
+    <typeAliases>
+        <!-- 批量扫描 别名-->
+        <package name="com.itheima.domain"/>
+    </typeAliases>
+
+    <!--配置类型转换器
+    <typeHandlers>
+        <package name="com.itheima.typeHandler"/>
+    </typeHandlers>-->
+
+    <!--分页助手插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--设置方言-->
+            <property name="helperDialect" value="mysql"/>
+            <!--分页合理化参数-->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+
+</configuration>

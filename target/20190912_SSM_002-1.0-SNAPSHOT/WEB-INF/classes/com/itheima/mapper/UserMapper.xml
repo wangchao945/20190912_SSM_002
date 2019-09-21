@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.UserMapper">
+
+    <resultMap id="user" type="com.itheima.domain.User">
+        <id column="id" property="id"></id>
+        <result column="user_name" property="userName"></result>
+        <result column="pass_word" property="password"></result>
+        <result column="nick_name" property="nickName"></result>
+    </resultMap>
+
+    <sql id="BaseSql">
+        select id, user_name, pass_word, nick_name from user
+    </sql>
+
+    <select id="findAll" resultMap="user">
+        <include refid="BaseSql"/>
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="user">
+        <include refid="BaseSql"/>
+        where
+        id = #{id}
+    </select>
+
+    <select id="findByUserName" parameterType="String" resultMap="user">
+        <include refid="BaseSql"/>
+        where
+        user_name like #{userName}
+    </select>
+
+    <select id="findTotalCount" resultType="int">
+        select
+          count(*)
+         from
+          user
+    </select>
+
+    <insert id="save" parameterType="user">
+        insert into user
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != 0">
+                #{id},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="nickName != null">
+                #{nickName}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="user">
+        update user
+         set
+          user_name = #{userName}, pass_word = #{password}, nick_name = #{nickName}
+         where
+          id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete
+         from
+          user
+         where
+          id = #{id}
+    </delete>
+
+    <select id="findByCondition" parameterType="user" resultMap="user">
+        <include refid="BaseSql"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="password != null">
+                and pass_word = #{password}
+            </if>
+            <if test="nickName != null">
+                and nick_name = #{nickName}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIds" parameterType="list" resultMap="user">
+        <include refid="BaseSql"/>
+        <where>
+            <if test="list != null"/>
+            <foreach collection="list" open="id in (" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+
+</mapper>
